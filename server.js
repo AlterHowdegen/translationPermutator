@@ -1,6 +1,7 @@
 //var express = require('express');
 //var app = express();
 var fs = require('fs');
+var parseString = require('xml2js').parseString;
 
 //app.use("/public", express.static(__dirname + "/UI/dist"));
 
@@ -27,4 +28,9 @@ var sourceFile =
 
 fs.readFile('./source.xml', 'utf8', function(err, contents) {
     console.log(contents);
+
+		var xml = "<root>" + contents + "</root>";
+		parseString(xml, function (err, result) {
+		    console.dir(result);
+		});
 });
