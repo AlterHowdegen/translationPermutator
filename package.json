@@ -1,0 +1,12 @@
+{
+	"name": "Hangsbot",
+	"description": "A simple to use bot for trading on various cryptocurrency exchanges.",
+	"version": "0.0.1a",
+	"private": true,
+	"main": "server.js",
+	"license": "UNLICENSED",
+	"dependencies": {
+		"express": "*",
+		"node-bittrex-api": "*"
+	}
+}
