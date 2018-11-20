@@ -1,5 +1,10 @@
-Wenn LP
-<if cond=param;@;5/eq/0>über </if><if cond=param;@;5/eq/1>unter </if><get_param proc=@ index=4>%, </if>
-<if cond=param;@;1/eq/56>kann Benutzer einigen Angriffen <get_param proc=@ index=2> 2 Mal <if cond=param;@;6/ne/-1><get_param proc=@ index=6> Runde(n) lang ausweichen.</if>
-<if cond=param;@;1/lt/5>Erhöht <get_status proc=@ index=1> um <get_param proc=@ index=2>%.</if>
-<if cond=param;@;3/lt/100>(Bis zu <get_param proc=@ index=3> Mal)</if>
+<root>Wenn LP
+<if cond="param;@;5/eq/0">über </if>
+<if cond="param;@;5/eq/1">unter </if>
+<get_param proc="@" index="4"/>%,
+<if cond="param;@;1/eq/56">kann Benutzer einigen Angriffen <get_param proc="@" index="2"/> Mal
+  <if cond="param;@;6/ne/-1"><get_param proc="@" index="6"/> Runde(n) lang ausweichen.</if>
+</if>
+<if cond="param;@;1/lt/5">Erhöht <get_status proc="@" index="1"/> um <get_param proc="@" index="2"/>%.</if>
+<if cond="param;@;3/lt/100">(Bis zu <get_param proc="@" index="3"/> Mal)</if>
+</root>

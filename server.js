@@ -27,10 +27,14 @@ var parseString = require('xml2js').parseString;
 var sourceFile =
 
 fs.readFile('./source.xml', 'utf8', function(err, contents) {
-    console.log(contents);
 
-		var xml = "<root>" + contents + "</root>";
-		parseString(xml, function (err, result) {
-		    console.dir(result);
+		var xml = "<root>\n" + contents + "</root>";
+		console.log(xml);
+		parseString(xml, {ignoreAttrs: true}, function (err, result) {
+				if(err){
+						console.log(err);
+				}else{
+						console.dir(result);
+				}
 		});
 });
