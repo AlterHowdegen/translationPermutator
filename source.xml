@@ -1,2 +1,5 @@
 Wenn LP
 <if cond=param;@;5/eq/0>über </if>
+<if cond=param;@;5/eq/1>unter </if>
+<get_param proc=@ index=4>%,
+<if cond=param;@;1/eq/56>kann Benutzer einigen Angriffen <get_param proc=@ index=2> Mal <if cond=param;@;6/ne/-1><get_param proc=@ index=6> Runde(n) lang ausweichen.</if>

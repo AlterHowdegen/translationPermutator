@@ -34,25 +34,45 @@ fs.readFile('./source.xml', 'utf8', function(err, contents) {
 				// Traverse contents, building tree leaves at every if
 
 		binaryTree = new BinaryTree({body: "", remainingInput: contents});
-		console.log(binaryTree.root);
+		//console.log(binaryTree.root);
 		traverse(binaryTree.root);
 
 		let inorderTransversal = binaryTree.BFS();
 		console.log(inorderTransversal);
+		for (var i = 0, len = inorderTransversal.length; i < len; i++) {
+			if(inorderTransversal[i].remainingInput == "\n"){
+				console.log(inorderTransversal[i].body);
+				//console.log(inorderTransversal[i].remainingInput);
+			}
+		}
 });
 
 function traverse(node){
-	console.log(node.data.remainingInput);
-	console.log(node.data.remainingInput.length);
+	// console.log(node.data.remainingInput);
+	// console.log(node.data.remainingInput.length);
 
-  var runningBodyLeft = "";
-	var runningBodyRight = "";
+  var runningBodyLeft = node.data.body;
+	var runningBodyRight = node.data.body;
 
 	var searchingSplitTagClose = false;
 	var splittingNow = false;
 
+	var searchingOtherTagClose = false;
+
 	for (var i = 0, len = node.data.remainingInput.length; i < len; i++) {
 		var c = node.data.remainingInput[i];
+
+		if(searchingOtherTagClose){
+			if(c == ">"){
+				// console.log("Closing tag");
+				searchingOtherTagClose = false;
+				continue;
+			}else{
+				// Keep searching for closing tag
+				continue;
+			}
+		}
+
 		// If it's an if, append it's content to the left, and the rest without it's content to the right
 
 		if(searchingSplitTagClose){
@@ -67,47 +87,48 @@ function traverse(node){
 			}
 		}
 
-
-
 		switch(c){
 			case "<":
 				if(node.data.remainingInput[i + 1] == "/"){
-					console.log("Closing tag");
+					// console.log("Closing tag");
 					// Closing if?
 					if(node.data.remainingInput[i + 2] == "i" && node.data.remainingInput[i + 3] == "f"){
 						nowSplitting = false;
 						// Skip ahead 4 characters
-						console.log(runningBodyLeft);
-						console.log(runningBodyRight);
+						// console.log(runningBodyLeft);
+						// console.log(runningBodyRight);
 						i = i + 5;
 
 						// Append to BinaryTree
 						var remainingInput = node.data.remainingInput.substring(i, node.data.remainingInput.length);
-						console.log(remainingInput);
+						// console.log(remainingInput);
 
 						var leftNode = node.insertLeft({body: runningBodyLeft, remainingInput});
 						var rightNode = node.insertRight({body: runningBodyRight, remainingInput});
-
-
+						traverse(leftNode);
+						traverse(rightNode);
+						return;
 					}
 
 
 					// Proceed to next >
 
 				}else{
-					console.log("Opening tag");
+					// console.log("Opening tag");
 					if(node.data.remainingInput[i + 1] == "i" && node.data.remainingInput[i + 2] == "f"){
-						console.log("Opening if");
+						// console.log("Opening if");
 						// Skip ahead 3 characters
 						// Split remaining input later.
 						i = i + 4;
 						searchingSplitTagClose = true;
+					}else{
+						searchingOtherTagClose = true;
 					}
 				}
 
 			break;
 			default:
-				console.log(c);
+				// console.log("Adding: " + c);
 
 				// Ignore escaped characters
 
@@ -119,7 +140,16 @@ function traverse(node){
 					runningBodyRight += c;
 				}
 				runningBodyLeft += c;
-			break;
+
+
+			// console.log(i);
+			// console.log(node.data.remainingInput.length);
+			if(i + 1 == node.data.remainingInput.length){
+				// Finish up
+				remainingInput = "\n";
+				var leftNode = node.insertLeft({body: runningBodyLeft, remainingInput});
+			}
+
 		}
 	}
 }
